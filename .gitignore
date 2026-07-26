@@ -1,0 +1,13 @@
+## IDE
+.vscode/
+!.vscode/extensions.json
+.idea/
+.zed/
+
+## Secrets
+.env
+.env.local
+.env.*.local
+
+## Generated
+node_modules/

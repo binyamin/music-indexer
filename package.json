@@ -1,0 +1,7 @@
+{
+	"name": "npm-template",
+	"private": true,
+	"type": "module",
+	"version": "0.1.0-dev.0",
+	"license": "MIT"
+}
