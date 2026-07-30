@@ -1,0 +1,17 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "npm-template",
+      "dependencies": {
+        "taglib-wasm": "latest",
+      },
+    },
+  },
+  "packages": {
+    "@msgpack/msgpack": ["@msgpack/msgpack@3.1.3", "", {}, "sha512-47XIizs9XZXvuJgoaJUIE2lFoID8ugvc0jzSHP+Ptfk8nTbnR8g788wv48N03Kx0UkAv559HWRQ3yzOgzlRNUA=="],
+
+    "taglib-wasm": ["taglib-wasm@1.6.1", "", { "dependencies": { "@msgpack/msgpack": "^3.1.3" }, "peerDependencies": { "typescript": ">=4.5.0" }, "optionalPeers": ["typescript"] }, "sha512-KSb+AxT1ynzM6ECR373mzO6Heji6EW8O/LOBgCqtvSVSy9ghI/mDmBd9KjQ3QtITqXm/1lkJvOvpZCzLYW6Yag=="],
+  }
+}

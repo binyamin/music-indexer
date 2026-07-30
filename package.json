@@ -3,5 +3,8 @@
 	"private": true,
 	"type": "module",
 	"version": "0.1.0-dev.0",
-	"license": "MIT"
+	"license": "MIT",
+	"dependencies": {
+		"taglib-wasm": "^1.6.1"
+	}
 }
