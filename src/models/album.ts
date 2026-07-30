@@ -1,5 +1,5 @@
-import { ArtistRef } from './artist';
-import { TrackRef } from './track';
+import type { ArtistRef } from './artist';
+import type { TrackRef } from './track';
 
 export interface Album {
 	id: string;
