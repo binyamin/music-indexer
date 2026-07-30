@@ -48,8 +48,8 @@ export async function parseFile(file: FolderScanItem): Promise<FileResult> {
 			switch (file.error.code) {
 				case 'UNSUPPORTED_FORMAT':
 					diag = {
-						code: 'UNSUPPORTED_FORMAT',
-						severity: 'error',
+						code: 'unsupported',
+						level: 'error',
 						message: file.error.message,
 						location: {
 							type: 'file',
@@ -59,8 +59,8 @@ export async function parseFile(file: FolderScanItem): Promise<FileResult> {
 					break;
 				case 'INVALID_FORMAT':
 					diag = {
-						code: 'INVALID_DATA',
-						severity: 'error',
+						code: 'invalid',
+						level: 'error',
 						message: file.error.message,
 						location: {
 							type: 'file',
@@ -70,8 +70,8 @@ export async function parseFile(file: FolderScanItem): Promise<FileResult> {
 					break;
 				case 'METADATA':
 					diag = {
-						code: 'INVALID_DATA',
-						severity: 'error',
+						code: 'invalid',
+						level: 'error',
 						message: file.error.message,
 						location: {
 							type: 'file',
