@@ -34,7 +34,7 @@ export type DiagnosticCode =
 
 export type DiagnosticLocation =
 	| { type: 'file'; path: string }
-	| { type: 'metadata'; path: string; property: string }
+	| { type: 'metadata'; property: string }
 	| { type: 'track'; id: string }
 	| { type: 'album'; id: string }
 	| { type: 'artist'; id: string };
@@ -47,5 +47,5 @@ export interface Diagnostic {
 	/** Human-readable detail. This is the only view into *what* happened. */
 	message: string;
 	/** Where did this occur */
-	location?: DiagnosticLocation;
+	location: DiagnosticLocation;
 }
