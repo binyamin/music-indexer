@@ -1,10 +1,10 @@
 import { isTagLibError } from 'taglib-wasm';
-import { type FolderScanItem } from 'taglib-wasm/folder';
+import type { FolderScanItem } from 'taglib-wasm/folder';
 import type { Diagnostic } from '../shared/diagnostic';
 import type { FileResult, RawMetadata } from './types';
 
 export async function parseFile(file: FolderScanItem): Promise<FileResult> {
-	if (file.status == 'ok') {
+	if (file.status === 'ok') {
 		const diagnostics: Diagnostic[] = [];
 
 		const metadata: RawMetadata = {
