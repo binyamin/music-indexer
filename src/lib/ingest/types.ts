@@ -1,4 +1,4 @@
-import type { Diagnostic } from '../shared/diagnostic';
+import type { Diagnostic } from '../../shared/diagnostic';
 
 export interface RawMetadata {
 	title?: string;
