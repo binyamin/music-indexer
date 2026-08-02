@@ -4,9 +4,7 @@
  * @module
  */
 
-import type { Album } from '../models/album';
-import type { Artist } from '../models/artist';
-import type { Track } from '../models/track';
+import type { Album, Artist, Track } from '../models/entities';
 import { hash } from './hash';
 import { normalizeArtistName, normalizeTitle } from './normalize';
 
