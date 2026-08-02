@@ -1,5 +1,5 @@
 import type { Diagnostic } from '../../shared/diagnostic';
-import { has } from '../../shared/utils';
+import { has } from '../../shared/utils.ts';
 import type { ReleaseType } from '../models/metadata';
 
 export function normalizeReleaseType(value: string[]): {
