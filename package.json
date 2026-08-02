@@ -5,7 +5,7 @@
 	"version": "0.1.0-dev.0",
 	"license": "MIT",
 	"dependencies": {
-		"@types/node": "^26.1.2",
+		"@types/node": "^24.13.3",
 		"taglib-wasm": "^1.6.1"
 	}
 }
