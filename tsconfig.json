@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"types": ["node"],
 		"lib": ["ESNext"],
 		"module": "ESNext",
 		"target": "ESNext",
@@ -13,7 +14,6 @@
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true,
-		"downlevelIteration": true,
 		"allowSyntheticDefaultImports": true
 	}
 }
