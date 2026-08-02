@@ -32,6 +32,14 @@ describe('normalize', () => {
 
 			assert.strictEqual(actual.value, undefined);
 			assert.strictEqual(actual.diagnostics.length, 1);
+			assert.partialDeepStrictEqual(actual.diagnostics[0], {
+				level: 'warning',
+				code: 'missing',
+				location: {
+					type: 'metadata',
+					property: 'releaseType',
+				},
+			});
 		});
 
 		it('ignores unknown values', () => {
@@ -39,6 +47,14 @@ describe('normalize', () => {
 
 			assert.deepEqual(actual.value, ['album']);
 			assert.strictEqual(actual.diagnostics.length, 1);
+			assert.partialDeepStrictEqual(actual.diagnostics[0], {
+				level: 'warning',
+				code: 'invalid',
+				location: {
+					type: 'metadata',
+					property: 'releaseType',
+				},
+			});
 		});
 
 		it('reports a diagnostic and drops the value on conflicting primary types', () => {
