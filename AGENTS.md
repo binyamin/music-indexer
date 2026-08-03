@@ -3,7 +3,7 @@
 ## Project Overview
 
 - Project Name: Mu
-- Repository URL: n/a yet
+- Repository URL: https://github.com/binyamin/music-indexer
 - Purpose: Build a normalized music library from audio files. Exposed as an
   engine and a CLI.
 - Stack:
