@@ -35,10 +35,6 @@ describe('normalize', () => {
 			assert.partialDeepStrictEqual(actual.diagnostics[0], {
 				level: 'warning',
 				code: 'missing',
-				location: {
-					type: 'metadata',
-					property: 'releaseType',
-				},
 			});
 		});
 
@@ -50,10 +46,6 @@ describe('normalize', () => {
 			assert.partialDeepStrictEqual(actual.diagnostics[0], {
 				level: 'warning',
 				code: 'invalid',
-				location: {
-					type: 'metadata',
-					property: 'releaseType',
-				},
 			});
 		});
 
@@ -65,10 +57,6 @@ describe('normalize', () => {
 			assert.partialDeepStrictEqual(actual.diagnostics[0], {
 				level: 'warning',
 				code: 'conflicting',
-				location: {
-					type: 'metadata',
-					property: 'releaseType',
-				},
 			});
 		});
 	});

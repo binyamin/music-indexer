@@ -9,7 +9,16 @@ export function normalizeMetadata(file: Required<FileResult>): Metadata {
 	diagnostics.push(...file.diagnostics);
 
 	const rt = normalizeReleaseType(file.metadata.releaseType ?? []);
-	diagnostics.push(...rt.diagnostics);
+	for (const d of rt.diagnostics) {
+		diagnostics.push({
+			...d,
+			location: {
+				type: 'metadata',
+				path: file.path,
+				property: 'releaseType',
+			},
+		});
+	}
 
 	return {
 		path: file.path,
