@@ -18,7 +18,11 @@ describe('normalize', () => {
 		});
 
 		it('combines a primary type with secondary types', () => {
-			const actual = normalizeReleaseType(['album', 'live', 'compilation']);
+			const actual = normalizeReleaseType([
+				'album',
+				'live',
+				'compilation',
+			]);
 
 			assert.deepEqual(actual.value, [
 				'album',

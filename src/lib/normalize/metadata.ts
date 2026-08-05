@@ -1,7 +1,7 @@
 import path from 'node:path';
-import type { Diagnostic } from '../../shared/diagnostic';
-import type { FileResult } from '../ingest/types';
-import type { Metadata } from '../models/metadata';
+import type { Diagnostic } from '../../shared/diagnostic.ts';
+import type { FileResult } from '../ingest/types.ts';
+import type { Metadata } from '../models/metadata.ts';
 import { normalizeReleaseType } from './release-type.ts';
 
 export function normalizeMetadata(file: Required<FileResult>): Metadata {
@@ -24,8 +24,8 @@ export function normalizeMetadata(file: Required<FileResult>): Metadata {
 		path: file.path,
 		data: {
 			...file.metadata,
-			title: file.metadata.title
-				|| path.basename(file.path, path.extname(file.path)),
+			title: file.metadata.title ||
+				path.basename(file.path, path.extname(file.path)),
 			releaseType: rt.value,
 		},
 		diagnostics,

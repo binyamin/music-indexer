@@ -4,7 +4,7 @@
  * @module
  */
 
-import type { Album, Artist, Track } from '../models/entities';
+import type { Album, Artist, Track } from '../models/entities.ts';
 import { hash } from './hash.ts';
 import { normalizeArtistName, normalizeTitle } from './normalize.ts';
 
@@ -17,7 +17,7 @@ export async function artistId(data: Pick<Artist, 'name'>) {
 export async function albumId(data: Pick<Album, 'title' | 'artists'>) {
 	const key = [
 		normalizeTitle(data.title),
-		...data.artists.map(v => v.id).sort(),
+		...data.artists.map((v) => v.id).sort(),
 	].join('\0');
 
 	return await hash(key);

@@ -1,4 +1,4 @@
-import type { FileResult, RawMetadata } from '../ingest/types';
+import type { FileResult, RawMetadata } from '../ingest/types.ts';
 
 export function makeFile(
 	overrides: Partial<Omit<FileResult, 'metadata'>> & {

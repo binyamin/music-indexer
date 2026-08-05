@@ -1,4 +1,4 @@
-import type { Album, Artist, Track } from './entities';
+import type { Album, Artist, Track } from './entities.ts';
 
 export interface Library {
 	artists: Map<string, Artist>;

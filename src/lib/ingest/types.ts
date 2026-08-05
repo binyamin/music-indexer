@@ -1,4 +1,4 @@
-import type { Diagnostic } from '../../shared/diagnostic';
+import type { Diagnostic } from '../../shared/diagnostic.ts';
 
 export interface RawMetadata {
 	title?: string;

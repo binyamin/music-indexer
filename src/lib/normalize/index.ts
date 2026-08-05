@@ -6,4 +6,4 @@
  * @module
  */
 
-export { normalizeMetadata } from './metadata';
+export { normalizeMetadata } from './metadata.ts';

@@ -1,7 +1,7 @@
 import { isTagLibError } from 'taglib-wasm';
 import type { FolderScanItem } from 'taglib-wasm/folder';
-import type { Diagnostic } from '../../shared/diagnostic';
-import type { FileResult, RawMetadata } from './types';
+import type { Diagnostic } from '../../shared/diagnostic.ts';
+import type { FileResult, RawMetadata } from './types.ts';
 
 export async function parseFile(file: FolderScanItem): Promise<FileResult> {
 	if (file.status === 'ok') {
@@ -23,9 +23,11 @@ export async function parseFile(file: FolderScanItem): Promise<FileResult> {
 			isrc: file.tags.isrc?.[0],
 			label: file.tags.label?.[0],
 			lyricist: file.tags.lyricist,
-			releaseDate: [file.tags.date].flat()?.[0] ?? file.tags.year?.toString(),
-			releaseType: file
-				.tags['RELEASETYPE' as keyof typeof file.tags] as string[],
+			releaseDate: [file.tags.date].flat()?.[0]
+				?? file.tags.year?.toString(),
+			releaseType: file.tags[
+				'RELEASETYPE' as keyof typeof file.tags
+			] as string[],
 			title: file.tags.title?.[0],
 			track: file.tags.track
 				? {

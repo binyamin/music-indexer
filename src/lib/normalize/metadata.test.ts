@@ -16,7 +16,9 @@ describe('normalize', () => {
 		});
 
 		it('handles extensions with multiple dots', () => {
-			const file = makeFile({ path: '/music/Greatest Hits/song.backup.mp3' });
+			const file = makeFile({
+				path: '/music/Greatest Hits/song.backup.mp3',
+			});
 
 			const actual = normalizeMetadata(file);
 
