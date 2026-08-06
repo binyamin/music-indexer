@@ -8,16 +8,16 @@
   engine and a CLI.
 - Stack:
   - Runtime: Node.js LTS
-  - Package Manager: Bun 1.x
+  - Package Manager: PNPM
   - Formatter: dprint
-  - Test Runner: `node:test` (not `bun test`)
+  - Test Runner: `node:test`
 
 ## Setup & Commands
 
-- Install deps: `bun install`
-- Run tests: `node --test` (not `bun test`)
+- Install deps: `pnpm install`
+- Run tests: `node --test`
 - Format files: `dprint fmt`
-- Type Checking: `bunx tsc`
+- Type Checking: `pnpx typescript`
 
 ## Architecture
 
