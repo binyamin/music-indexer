@@ -24,8 +24,8 @@ export function normalizeMetadata(file: Required<FileResult>): Metadata {
 		path: file.path,
 		data: {
 			...file.metadata,
-			title: file.metadata.title ||
-				path.basename(file.path, path.extname(file.path)),
+			title: file.metadata.title
+				|| path.basename(file.path, path.extname(file.path)),
 			releaseType: rt.value,
 		},
 		diagnostics,
