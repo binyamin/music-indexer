@@ -3,7 +3,7 @@ import type { FolderScanItem } from 'taglib-wasm/folder';
 import type { Diagnostic } from '../../shared/diagnostic.ts';
 import type { FileResult, RawMetadata } from './types.ts';
 
-export async function parseFile(file: FolderScanItem): Promise<FileResult> {
+export function parseFile(file: FolderScanItem): FileResult {
 	if (file.status === 'ok') {
 		const diagnostics: Diagnostic[] = [];
 
