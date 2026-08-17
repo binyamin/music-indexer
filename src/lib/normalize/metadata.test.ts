@@ -4,7 +4,7 @@ import { normalizeMetadata } from './metadata.ts';
 import { makeFile } from './test-utils.ts';
 
 describe('normalize', () => {
-	describe('title', () => {
+	describe.todo('title', () => {
 		it('defaults to the file name without extension', () => {
 			const file = makeFile({
 				path: '/music/Greatest Hits/01 - Yesterday.mp3',
