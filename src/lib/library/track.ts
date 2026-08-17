@@ -11,6 +11,7 @@ import { resolveArtist } from './artist';
 import type { Field } from './utils';
 
 export interface RawTrack {
+	path: string;
 	title: Field<string>;
 	artists: Field<Ref<'artist'>[]>;
 }
@@ -22,6 +23,7 @@ export async function createRawTrack(
 	{ data, path: file }: Metadata,
 ): Promise<RawTrack> {
 	return {
+		path: file,
 		title: {
 			default: data.title,
 			computed: path.basename(file, path.extname(file)),
