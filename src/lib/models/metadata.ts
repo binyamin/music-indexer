@@ -12,7 +12,7 @@ export interface Metadata {
 	path: string;
 	diagnostics: Diagnostic[];
 	data: {
-		title: string;
+		title?: string;
 		album?: string;
 		artists?: string[];
 		albumArtists?: string[];
