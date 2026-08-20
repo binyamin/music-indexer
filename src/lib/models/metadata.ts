@@ -1,4 +1,4 @@
-import type { Diagnostic } from '../../shared/diagnostic.ts';
+import type { Diagnostic } from '#shared/diagnostic.ts';
 
 /**
  * @see https://musicbrainz.org/doc/Release_Group/Type

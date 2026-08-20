@@ -1,4 +1,4 @@
-import type { Diagnostic } from '../../shared/diagnostic.ts';
+import type { Diagnostic } from '#shared/diagnostic.ts';
 import type { FileResult } from '../ingest/types.ts';
 import type { Metadata } from '../models/metadata.ts';
 import { normalizeReleaseType } from './release-type.ts';

@@ -1,6 +1,6 @@
+import type { Diagnostic } from '#shared/diagnostic.ts';
 import { isTagLibError } from 'taglib-wasm';
 import type { FolderScanItem } from 'taglib-wasm/folder';
-import type { Diagnostic } from '../../shared/diagnostic.ts';
 import type { FileResult, RawMetadata } from './types.ts';
 
 export function parseFile(file: FolderScanItem): FileResult {
