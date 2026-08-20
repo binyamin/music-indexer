@@ -6,36 +6,49 @@
 
 import { artistId } from '../ids';
 import { normalizeArtistName } from '../ids/normalize';
-import type { Artist, Ref } from '../models/entities';
+import type { Ref } from '../models/entities';
+import type { BuildEvent } from '.';
+
+// The `artistId` method is expensive due to hashing, so we cache the normalized
+// artist key instead of the id
+const artistCache = new Map<string, Ref<'artist'>>();
 
 /**
- * Syntax sugar for creating an artist entity (not ref).
+ * Resolves artist {@linkcode Ref}s from an array of raw strings, streaming any
+ * new {@linkcode Artist} entities.
  */
-async function createArtist(name: string): Promise<Artist> {
-	return {
-		id: await artistId({ name }),
-		name, // Currently, the first raw value we read is used for display
-	};
-}
+export async function* createArtists(
+	names: string[],
+): AsyncGenerator<BuildEvent & { kind: 'artist' }, Ref<'artist'>[]> {
+	const artists: Ref<'artist'>[] = [];
 
-// key = normalized name, not id
-const artistsByKey = new Map<string, Artist>();
+	for (const name of names) {
+		// same normalization ids uses internally
+		const key = normalizeArtistName(name);
 
-/**
- * Resolve an artist {@linkcode Ref} from the raw name (string).
- */
-// Note: This method exists to avoid computing the id for each name separately.
-// The hashing procedure is expensive, so we cache the normalized artist key.
-export async function resolveArtist(rawName: string): Promise<Ref<'artist'>> {
-	// same normalization ids uses internally
-	const key = normalizeArtistName(rawName);
+		const existing = artistCache.get(key);
+		if (existing) {
+			artists.push(existing);
+		} else {
+			const id = await artistId({ name });
 
-	const existing = artistsByKey.get(key);
-	if (existing) return { entity: 'artist', id: existing.id };
+			yield {
+				kind: 'artist',
+				data: {
+					id,
+					name, // Currently, the first raw value we read is used for display
+				},
+				diagnostics: [],
+			};
 
-	const artist = await createArtist(rawName);
+			const ref = artistCache.getOrInsert(key, {
+				entity: 'artist',
+				id,
+			});
 
-	artistsByKey.set(key, artist);
+			artists.push(ref);
+		}
+	}
 
-	return { entity: 'artist', id: artist.id };
+	return artists;
 }

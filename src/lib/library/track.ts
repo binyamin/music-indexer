@@ -7,7 +7,6 @@
 import path from 'node:path';
 import type { Ref } from '../models/entities';
 import type { Metadata } from '../models/metadata';
-import { resolveArtist } from './artist';
 import type { Field } from './utils';
 
 export interface RawTrack {
@@ -19,9 +18,10 @@ export interface RawTrack {
 /**
  * Turns metadata into {@linkcode RawTrack}s.
  */
-export async function createRawTrack(
+export function createRawTrack(
 	{ data, path: file }: Metadata,
-): Promise<RawTrack> {
+	artists?: Ref<'artist'>[],
+): RawTrack {
 	return {
 		path: file,
 		title: {
@@ -29,9 +29,7 @@ export async function createRawTrack(
 			computed: path.basename(file, path.extname(file)),
 		},
 		artists: {
-			default: data.artists
-				? await Promise.all(data.artists.map(resolveArtist))
-				: undefined,
+			default: artists?.length ? artists : undefined,
 		},
 	};
 }
