@@ -1,14 +1,13 @@
+import { hash as _hash } from 'node:crypto';
+
 /**
  * Create deterministic IDs from strings
  */
-export async function hash(value: string): Promise<string> {
+export function hash(value: string): string {
 	const bytes = new TextEncoder().encode(value);
 
-	// SHA-256 Hash
-	const hash = await crypto.subtle.digest('SHA-256', bytes);
-
-	// Encode in `base64url`
-	const encoded = new Uint8Array(hash).toBase64({ alphabet: 'base64url' });
+	// SHA-256 Hash > Encode in `base64url`
+	const encoded = _hash('SHA256', bytes, 'base64url');
 
 	// Safely truncate to first 16 characters
 	return encoded.slice(0, 16);

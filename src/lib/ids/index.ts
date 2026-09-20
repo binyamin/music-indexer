@@ -8,22 +8,22 @@ import type { Album, Artist, Track } from '../models/entities.ts';
 import { hash } from './hash.ts';
 import { normalizeArtistName, normalizeTitle } from './normalize.ts';
 
-export async function artistId(data: Pick<Artist, 'name'>) {
+export function artistId(data: Pick<Artist, 'name'>) {
 	const key = normalizeArtistName(data.name);
 
-	return await hash(key);
+	return hash(key);
 }
 
-export async function albumId(data: Pick<Album, 'title' | 'artists'>) {
+export function albumId(data: Pick<Album, 'title' | 'artists'>) {
 	const key = [
 		normalizeTitle(data.title),
 		...data.artists.map((v) => v.id).sort(),
 	].join('\0');
 
-	return await hash(key);
+	return hash(key);
 }
 
-export async function trackId(
+export function trackId(
 	data: Pick<Track, 'album' | 'track_number' | 'disc_number'>,
 ) {
 	const key = [
@@ -32,5 +32,5 @@ export async function trackId(
 		data.disc_number,
 	].join('\0');
 
-	return await hash(key);
+	return hash(key);
 }

@@ -27,7 +27,7 @@ export async function createArtist(name: string): Promise<Result<Artist>> {
 			diagnostics: [],
 		};
 	} else {
-		const id = await artistId({ name });
+		const id = artistId({ name });
 
 		const entity: Artist = {
 			id,
