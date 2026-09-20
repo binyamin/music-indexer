@@ -6,49 +6,40 @@
 
 import { artistId } from '../ids';
 import { normalizeArtistName } from '../ids/normalize';
-import type { Ref } from '../models/entities';
-import type { BuildEvent } from '.';
+import type { Artist } from '../models/entities';
+import type { Result } from './utils';
 
 // The `artistId` method is expensive due to hashing, so we cache the normalized
 // artist key instead of the id
-const artistCache = new Map<string, Ref<'artist'>>();
+const artistCache = new Map<string, Artist>();
 
 /**
- * Resolves artist {@linkcode Ref}s from an array of raw strings, streaming any
- * new {@linkcode Artist} entities.
+ * Resolves an {@linkcode Artist} entity from a raw name string
  */
-export async function* createArtists(
-	names: string[],
-): AsyncGenerator<BuildEvent & { kind: 'artist' }, Ref<'artist'>[]> {
-	const artists: Ref<'artist'>[] = [];
+export async function createArtist(name: string): Promise<Result<Artist>> {
+	// same normalization ids uses internally
+	const key = normalizeArtistName(name);
 
-	for (const name of names) {
-		// same normalization ids uses internally
-		const key = normalizeArtistName(name);
+	const existing = artistCache.get(key);
+	if (existing) {
+		return {
+			result: existing,
+			diagnostics: [],
+		};
+	} else {
+		const id = await artistId({ name });
 
-		const existing = artistCache.get(key);
-		if (existing) {
-			artists.push(existing);
-		} else {
-			const id = await artistId({ name });
+		const entity: Artist = {
+			id,
+			// Currently, only the first raw value we read is used. Any variations are
+			// ignored (e.g. "Mordechai Ben David" vs "MBD")
+			name,
+		};
 
-			yield {
-				kind: 'artist',
-				data: {
-					id,
-					name, // Currently, the first raw value we read is used for display
-				},
-				diagnostics: [],
-			};
-
-			const ref = artistCache.getOrInsert(key, {
-				entity: 'artist',
-				id,
-			});
-
-			artists.push(ref);
-		}
+		artistCache.set(key, entity);
+		return {
+			result: entity,
+			diagnostics: [],
+		};
 	}
-
-	return artists;
 }

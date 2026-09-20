@@ -1,3 +1,5 @@
+import type { Diagnostic } from '#shared/diagnostic.ts';
+
 export interface Field<T> {
 	default?: T;
 	computed?: T;
@@ -9,4 +11,9 @@ export interface Field<T> {
  */
 export function resolveField<T>(field: Field<T>): T | undefined {
 	return field.default ?? field.computed;
+}
+
+export interface Result<T> {
+	result: T;
+	diagnostics: Diagnostic[];
 }
