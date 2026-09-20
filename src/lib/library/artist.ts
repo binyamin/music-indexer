@@ -20,26 +20,19 @@ export async function createArtist(name: string): Promise<Result<Artist>> {
 	// same normalization ids uses internally
 	const key = normalizeArtistName(name);
 
-	const existing = artistCache.get(key);
-	if (existing) {
-		return {
-			result: existing,
-			diagnostics: [],
-		};
-	} else {
+	const entity = artistCache.getOrInsertComputed(key, () => {
 		const id = artistId({ name });
 
-		const entity: Artist = {
+		return {
 			id,
 			// Currently, only the first raw value we read is used. Any variations are
 			// ignored (e.g. "Mordechai Ben David" vs "MBD")
 			name,
 		};
+	});
 
-		artistCache.set(key, entity);
-		return {
-			result: entity,
-			diagnostics: [],
-		};
-	}
+	return {
+		result: entity,
+		diagnostics: [],
+	};
 }
