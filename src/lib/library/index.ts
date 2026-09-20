@@ -46,7 +46,7 @@ export interface BuildOptions {
 }
 
 export async function buildLibrary(
-	items: AsyncIterable<Metadata>,
+	items: Iterable<Metadata> | AsyncIterable<Metadata>,
 	options?: BuildOptions,
 ): Promise<Result<Library>> {
 	const lib: Library = {
