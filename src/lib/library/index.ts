@@ -29,16 +29,17 @@ export type BuildEvent<
 		kind: T;
 		diagnostics: Diagnostic[];
 	}
-	& (T extends 'file' ? {
-			path: string;
-		}
-		: {
-			id: string;
-		})
-	& (T extends 'track' ? {
-			albumId: string;
-		}
-		: {});
+	& ({
+		kind: 'file';
+		path: string;
+	} | {
+		kind: 'album' | 'artist';
+		id: string;
+	} | {
+		kind: 'track';
+		id: string;
+		albumId: string;
+	});
 
 export interface BuildOptions {
 	onEvent?: (event: BuildEvent) => void;
