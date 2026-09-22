@@ -9,6 +9,7 @@
 		"#shared/*": "./src/shared/*"
 	},
 	"dependencies": {
+		"@std/assert": "jsr:^1.0.19",
 		"@types/node": "^24.13.3",
 		"taglib-wasm": "^1.6.1"
 	}
