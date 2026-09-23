@@ -1,6 +1,6 @@
 import { buildLibrary } from '#lib/library/index.ts';
 import type { Metadata } from '#lib/models/metadata.ts';
-import { assertArrayIncludes, assertEquals } from '@std/assert';
+import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
 
 describe('buildLibrary()', () => {
@@ -20,18 +20,16 @@ describe('buildLibrary()', () => {
 	describe('artists', () => {
 		it('creates an artist per track artist', async () => {
 			const { result } = await buildLibrary([data]);
-			assertArrayIncludes(
+			expect(
 				[...result.artists.values()].map(v => v.name),
-				data.data.artists!,
-			);
+			).toEqual(data.data.artists!);
 		});
 
 		it('creates an artist per album artist', async () => {
 			const { result } = await buildLibrary([data]);
-			assertArrayIncludes(
+			expect(
 				[...result.artists.values()].map(v => v.name),
-				data.data.albumArtists!,
-			);
+			).toEqual(data.data.albumArtists!);
 		});
 
 		it('dedupes artists', async () => {
@@ -45,7 +43,7 @@ describe('buildLibrary()', () => {
 					},
 				}],
 			);
-			assertEquals(result.artists.size, 2);
+			expect(result.artists.size).toBe(2);
 		});
 	});
 });

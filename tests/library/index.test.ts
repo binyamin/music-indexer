@@ -1,7 +1,7 @@
 import { type BuildEvent, buildLibrary } from '#lib/library/index.ts';
 import type { Metadata } from '#lib/models/metadata.ts';
 import type { Diagnostic } from '#shared/diagnostic.ts';
-import { assertArrayIncludes, assertEquals, assertRejects } from '@std/assert';
+import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
 
 describe('buildLibrary()', () => {
@@ -9,10 +9,10 @@ describe('buildLibrary()', () => {
 		it('returns an empty library and no diagnostics', async () => {
 			const { result, diagnostics } = await buildLibrary([]);
 
-			assertEquals(diagnostics.length, 0);
-			assertEquals(result.albums.size, 0);
-			assertEquals(result.artists.size, 0);
-			assertEquals(result.tracks.size, 0);
+			expect(diagnostics.length).toBe(0);
+			expect(result.albums.size).toBe(0);
+			expect(result.artists.size).toBe(0);
+			expect(result.tracks.size).toBe(0);
 		});
 	});
 
@@ -42,7 +42,7 @@ describe('buildLibrary()', () => {
 		it('forwards any diagnostics', async () => {
 			const { diagnostics } = await buildLibrary([data]);
 
-			assertArrayIncludes(diagnostics, [diag]);
+			expect(diagnostics).toEqual([diag]);
 		});
 
 		it('emits BuildEvents w/ diagnostics', async () => {
@@ -54,7 +54,7 @@ describe('buildLibrary()', () => {
 				},
 			});
 
-			assertArrayIncludes(events, [
+			expect(events).toEqual([
 				{
 					kind: 'file',
 					path: diag.location.path,
@@ -66,7 +66,8 @@ describe('buildLibrary()', () => {
 		it('aborts on ctrl+c', async () => {
 			const signal = AbortSignal.abort();
 
-			await assertRejects(() => buildLibrary([data], { signal }), DOMException);
+			await expect(buildLibrary([data], { signal }))
+				.rejects.toThrow(DOMException);
 		});
 	});
 });
