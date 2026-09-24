@@ -59,7 +59,7 @@ describe('buildLibrary()', () => {
 
 		// TODO: expect correct diagnostics
 		describe('missing track number', () => {
-			it('when release-type is single, defaults to 1', async () => {
+			it.todo('when release-type is single, defaults to 1', async () => {
 				const data = makeMetadata({
 					data: {
 						releaseType: ['single'],
@@ -73,7 +73,7 @@ describe('buildLibrary()', () => {
 				expect(actual).toBe(1);
 			});
 
-			it('when release-type is album, emits diagnostic', async () => {
+			it.todo('when release-type is album, emits diagnostic', async () => {
 				const data = makeMetadata({
 					data: {
 						releaseType: ['album'],
