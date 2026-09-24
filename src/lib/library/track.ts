@@ -4,13 +4,12 @@
  * @module
  */
 
+import type { Ref } from '#lib/models/entities.ts';
+import type { Metadata } from '#lib/models/metadata.ts';
 import path from 'node:path';
-import type { Ref } from '../models/entities';
-import type { Metadata } from '../models/metadata';
-import type { Field } from './utils';
+import type { Field } from './utils.ts';
 
 export interface RawTrack {
-	path: string;
 	title: Field<string>;
 	artists: Field<Ref<'artist'>[]>;
 }
@@ -20,16 +19,15 @@ export interface RawTrack {
  */
 export function createRawTrack(
 	{ data, path: file }: Metadata,
-	artists?: Ref<'artist'>[],
+	artists: Ref<'artist'>[],
 ): RawTrack {
 	return {
-		path: file,
 		title: {
 			default: data.title,
 			computed: path.basename(file, path.extname(file)),
 		},
 		artists: {
-			default: artists?.length ? artists : undefined,
+			default: artists.length ? artists : undefined,
 		},
 	};
 }

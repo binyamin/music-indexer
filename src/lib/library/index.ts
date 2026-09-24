@@ -13,9 +13,12 @@
  * @module
  */
 
+import type { Ref } from '#lib/models/entities.ts';
 import type { Library } from '#lib/models/library.ts';
+import type { Metadata } from '#lib/models/metadata.ts';
 import type { Diagnostic } from '#shared/diagnostic.ts';
-import type { Metadata } from '../models/metadata.ts';
+import { createArtist } from './artist.ts';
+import { createRawTrack, type RawTrack } from './track.ts';
 import type { Result } from './utils.ts';
 
 export type BuildEvent<
@@ -56,8 +59,55 @@ export async function buildLibrary(
 		tracks: new Map(),
 	};
 
+	const diagnostics: Diagnostic[] = [];
+
+	options?.signal?.throwIfAborted();
+
+	const draftTracks: RawTrack[] = [];
+
+	for await (const item of items) {
+		diagnostics.push(...item.diagnostics);
+		options?.onEvent?.({
+			kind: 'file',
+			path: item.path,
+			diagnostics: item.diagnostics,
+		});
+
+		options?.signal?.throwIfAborted();
+
+		const track_artists: Ref<'artist'>[] = [];
+
+		for (const name of item.data.artists ?? []) {
+			const artistResult = createArtist(name);
+
+			if (!lib.artists.has(artistResult.result.id)) {
+				lib.artists.set(artistResult.result.id, artistResult.result);
+				diagnostics.push(...artistResult.diagnostics);
+
+				options?.onEvent?.({
+					kind: 'artist',
+					id: artistResult.result.id,
+					diagnostics: artistResult.diagnostics,
+				});
+			}
+
+			track_artists.push({
+				entity: 'artist',
+				id: artistResult.result.id,
+			});
+
+			options?.signal?.throwIfAborted();
+		}
+
+		const draftTrack = createRawTrack(item, track_artists);
+
+		draftTracks.push(draftTrack);
+
+		options?.signal?.throwIfAborted();
+	}
+
 	return {
 		result: lib,
-		diagnostics: [],
+		diagnostics,
 	};
 }

@@ -4,10 +4,10 @@
  * @module
  */
 
-import { artistId } from '../ids';
-import { normalizeArtistName } from '../ids/normalize';
-import type { Artist } from '../models/entities';
-import type { Result } from './utils';
+import { artistId } from '#lib/ids/index.ts';
+import { normalizeArtistName } from '#lib/ids/normalize.ts';
+import type { Artist } from '#lib/models/entities.ts';
+import type { Result } from './utils.ts';
 
 // The `artistId` method is expensive due to hashing, so we cache the normalized
 // artist key instead of the id
@@ -16,7 +16,7 @@ const artistCache = new Map<string, Artist>();
 /**
  * Resolves an {@linkcode Artist} entity from a raw name string
  */
-export async function createArtist(name: string): Promise<Result<Artist>> {
+export function createArtist(name: string): Result<Artist> {
 	// same normalization ids uses internally
 	const key = normalizeArtistName(name);
 
