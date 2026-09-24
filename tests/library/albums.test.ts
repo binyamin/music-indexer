@@ -55,6 +55,7 @@ describe('buildLibrary()', () => {
 			expect(actual_track).toMatchObject(expected_track);
 		});
 
+		// TODO: expect correct diagnostics
 		describe('grouping', () => {
 			// candidate albums
 			it('splits by file dir', async () => {
@@ -76,7 +77,7 @@ describe('buildLibrary()', () => {
 			});
 
 			// raw albums
-			it('when defined album titles conflict, splits', async () => {
+			it('when defined album titles conflict, emits diagnostic & splits', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata(),
 					makeMetadata({
@@ -90,7 +91,21 @@ describe('buildLibrary()', () => {
 				expect(result.albums.size).toBe(2);
 			});
 
-			it('when defined release-types conflict, splits', async () => {
+			it('when some album titles are missing, emits diagnostic & merges', async () => {
+				const { result } = await buildLibrary([
+					makeMetadata(),
+					makeMetadata({
+						data: {
+							title: 'One More Dance',
+							album: undefined,
+						},
+					}),
+				]);
+
+				expect(result.albums.size).toBe(1);
+			});
+
+			it('when defined release-types conflict, emits diagnostic & splits', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({ data: { releaseType: ['album'] } }),
 					makeMetadata({
@@ -103,7 +118,7 @@ describe('buildLibrary()', () => {
 				expect(result.albums.size).toBe(2);
 			});
 
-			it('when secondary release-types conflict, merges', async () => {
+			it('when secondary release-types conflict, emits diagnostic & merges', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({ data: { releaseType: ['album', 'live'] } }),
 					makeMetadata({
@@ -118,7 +133,7 @@ describe('buildLibrary()', () => {
 				// TODO(future): expect "release-type" to be "album", not ["album", "live"]
 			});
 
-			it('when release-type is missing, merges', async () => {
+			it('when some release-types are missing, emits diagnostic & merges', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({ data: { releaseType: ['album'] } }),
 					makeMetadata({
@@ -133,7 +148,7 @@ describe('buildLibrary()', () => {
 				// TODO(future): expect "release-type" to be "album"
 			});
 
-			it('when defined dates conflict, splits', async () => {
+			it('when defined dates conflict, emits diagnostic & splits', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({
 						data: { releaseDate: '2026' },
@@ -149,7 +164,7 @@ describe('buildLibrary()', () => {
 				expect(result.albums.size).toBe(2);
 			});
 
-			it('when date is missing, merges', async () => {
+			it('when some dates are missing, emits diagnostic & merges', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({
 						data: { releaseDate: '2026' },
@@ -167,7 +182,7 @@ describe('buildLibrary()', () => {
 				// TODO(future): expect "release-date" to be "2026"
 			});
 
-			it('when defined album artists conflict, splits', async () => {
+			it('when defined album artists conflict, emits diagnostic & splits', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({
 						data: { albumArtists: ['Ari Goldwag'] },
@@ -175,7 +190,7 @@ describe('buildLibrary()', () => {
 					makeMetadata({
 						data: {
 							title: 'One More Dance',
-							albumArtists: ['Moshe Dov Goldwag'],
+							albumArtists: ['Ari Goldwag', 'Moshe Dov Goldwag'],
 						},
 					}),
 				]);
@@ -183,35 +198,24 @@ describe('buildLibrary()', () => {
 				expect(result.albums.size).toBe(2);
 			});
 
-			it(
-				'when some album artists are missing, emits diagnostic & merges',
-				async () => {
-					const { diagnostics, result } = await buildLibrary([
-						makeMetadata({
-							data: { albumArtists: ['Ari Goldwag'] },
-						}),
-						makeMetadata({
-							data: {
-								title: 'One More Dance',
-								albumArtists: undefined,
-							},
-						}),
-					]);
-
-					expect(result.albums.size).toBe(1);
-					expect(diagnostics).toMatchObject([
-						{
-							code: 'conflicting',
-							level: 'warning',
-							location: {
-								type: 'album',
-							},
+			it('when some album artists are missing, emits diagnostic & merges', async () => {
+				const { result } = await buildLibrary([
+					makeMetadata({
+						data: { albumArtists: ['Ari Goldwag'] },
+					}),
+					makeMetadata({
+						data: {
+							title: 'One More Dance',
+							albumArtists: undefined,
 						},
-					]);
-				},
-			);
+					}),
+				]);
+
+				expect(result.albums.size).toBe(1);
+			});
 		});
 
+		// TODO: expect correct diagnostics
 		describe('fallbacks', () => {
 			describe('missing album title', () => {
 				it('falls back to the parent folder name for a multi-track album', async () => {

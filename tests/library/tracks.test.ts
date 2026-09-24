@@ -28,9 +28,8 @@ describe('buildLibrary()', () => {
 			);
 		});
 
+		// TODO: expect correct diagnostics
 		it('missing title, defaults to file stem', async () => {
-			// TODO: diagnostic?
-
 			const data = makeMetadata({ data: { title: undefined } });
 
 			const expected = data.path.replace(/.+\/(.+)\.mp3$/, '$1');
@@ -41,6 +40,7 @@ describe('buildLibrary()', () => {
 			expect(actual).toBe(expected);
 		});
 
+		// TODO: expect correct diagnostics
 		it('missing artists, defaults to album artists', async () => {
 			const data = makeMetadata({ data: { artists: undefined } });
 			const { result } = await buildLibrary([data]);
@@ -57,6 +57,7 @@ describe('buildLibrary()', () => {
 			expect(actual).toContainEqual(expected);
 		});
 
+		// TODO: expect correct diagnostics
 		describe('missing track number', () => {
 			it('when release-type is single, defaults to 1', async () => {
 				const data = makeMetadata({
@@ -96,6 +97,7 @@ describe('buildLibrary()', () => {
 			});
 		});
 
+		// TODO: expect correct diagnostics
 		it('missing disc number, defaults to 1', async () => {
 			const data = makeMetadata({
 				data: {
