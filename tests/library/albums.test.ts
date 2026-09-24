@@ -1,7 +1,6 @@
 import { albumId, artistId, trackId } from '#lib/ids/index.ts';
 import { buildLibrary } from '#lib/library/index.ts';
 import type { Album, Track } from '#lib/models/entities.ts';
-import type { Metadata } from '#lib/models/metadata.ts';
 import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
 import { makeMetadata } from './test-utils';
@@ -56,10 +55,25 @@ describe('buildLibrary()', () => {
 			expect(actual_track).toMatchObject(expected_track);
 		});
 
-		describe.todo('grouping', () => {
+		describe('grouping', () => {
 			// candidate albums
-			it.todo('splits by file dir');
-			it.todo('when file dir is a disc folder, splits by parent dir');
+			it('splits by file dir', async () => {
+				const { result } = await buildLibrary([
+					makeMetadata({ path: '~/Music/D2R7/ayeka.mp3' }),
+					makeMetadata({ path: '~/Music/D2R6/elul.mp3' }),
+				]);
+
+				expect(result.albums.size).toBe(2);
+			});
+
+			it('when file dir is a disc folder, splits by parent dir', async () => {
+				const { result } = await buildLibrary([
+					makeMetadata({ path: '~/Music/D2R7/Disc 1/ayeka.mp3' }),
+					makeMetadata({ path: '~/Music/D2R7/Disc 2/elul.mp3' }),
+				]);
+
+				expect(result.albums.size).toBe(1);
+			});
 
 			// raw albums
 			it('when defined album titles conflict, splits', async () => {
