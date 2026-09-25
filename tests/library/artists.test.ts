@@ -1,7 +1,7 @@
 import { buildLibrary } from '#lib/library/index.ts';
 import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
-import { makeMetadata } from './test-utils';
+import { makeMetadata } from './test-utils.ts';
 
 describe('buildLibrary()', () => {
 	const data = makeMetadata({

@@ -13,7 +13,7 @@
  * @module
  */
 
-import { candidateAlbumKey, trackId } from '#lib/ids/index.ts';
+import { candidateAlbumKey } from '#lib/ids/index.ts';
 import type { Ref } from '#lib/models/entities.ts';
 import type { Library } from '#lib/models/library.ts';
 import type { Metadata } from '#lib/models/metadata.ts';

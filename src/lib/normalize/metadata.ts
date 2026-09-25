@@ -1,6 +1,6 @@
+import type { FileResult } from '#lib/ingest/types.ts';
+import type { Metadata } from '#lib/models/metadata.ts';
 import type { Diagnostic } from '#shared/diagnostic.ts';
-import type { FileResult } from '../ingest/types.ts';
-import type { Metadata } from '../models/metadata.ts';
 import { normalizeReleaseType } from './release-type.ts';
 
 export function normalizeMetadata(file: Required<FileResult>): Metadata {

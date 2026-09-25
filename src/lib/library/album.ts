@@ -7,7 +7,6 @@
 import { albumId } from '#lib/ids/index.ts';
 import type { Album, Ref } from '#lib/models/entities.ts';
 import type { Group, GroupedTrack } from './group.ts';
-import type { RawTrack } from './track.ts';
 import { type Field, resolveField } from './utils.ts';
 
 export interface RawAlbum {
@@ -17,7 +16,7 @@ export interface RawAlbum {
 }
 
 /**
- * Constructs a {@linkcode RawAlbum} from a group of {@linkcode RawTrack}s.
+ * Constructs a {@linkcode RawAlbum} from a {@link Group}
  */
 export function createRawAlbum(group: Group): RawAlbum {
 	return {

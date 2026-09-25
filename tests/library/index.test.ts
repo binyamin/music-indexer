@@ -1,9 +1,8 @@
 import { type BuildEvent, buildLibrary } from '#lib/library/index.ts';
-import type { Metadata } from '#lib/models/metadata.ts';
 import type { Diagnostic } from '#shared/diagnostic.ts';
 import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
-import { makeMetadata } from './test-utils';
+import { makeMetadata } from './test-utils.ts';
 
 describe('buildLibrary()', () => {
 	describe('empty input', () => {
