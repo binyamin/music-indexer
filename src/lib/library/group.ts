@@ -5,27 +5,26 @@
  * @module
  */
 
+import type { Ref } from '#lib/models/entities.ts';
+import type { Metadata } from '#lib/models/metadata.ts';
 import path from 'node:path';
-import type { RawTrack } from './track';
+import type { RawTrack } from './track.ts';
 
-function getAlbumFolder(file: string): string {
+export function getAlbumFolder(file: string): string {
 	const folder = path.dirname(file);
 	const leaf = path.basename(folder);
 	const isDiscFolder = /^(cd|disc)\s*[\.-_]?\s*\d+$/i.test(leaf);
 
-	return isDiscFolder ? path.dirname(folder) : folder;
+	return isDiscFolder ? path.basename(path.dirname(folder)) : leaf;
 }
 
-export async function group(
-	tracks: AsyncIterable<RawTrack>,
-): Promise<Map<string, RawTrack[]>> {
-	const buckets = new Map<string, RawTrack[]>();
-
-	for await (const t of tracks) {
-		const key = getAlbumFolder(t.path);
-		const b = buckets.getOrInsert(key, []);
-		b.push(t);
-	}
-
-	return buckets;
+export interface GroupedTrack extends Omit<Metadata, 'diagnostics'> {
+	track: RawTrack;
 }
+
+export type Group = {
+	dir: string;
+	title: string | null;
+	artists: Ref<'artist'>[] | null;
+	tracks: GroupedTrack[];
+};

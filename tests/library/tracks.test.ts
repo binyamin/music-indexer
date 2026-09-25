@@ -18,12 +18,12 @@ describe('buildLibrary()', () => {
 					title: data.data.title,
 					disc_number: 1,
 					track_number: 1,
-					artists: [{
+					artists: data.data.artists.map((n) => ({
 						entity: 'artist',
 						id: artistId({
-							name: data.data.artists[0],
+							name: n,
 						}),
-					}],
+					})),
 				},
 			);
 		});

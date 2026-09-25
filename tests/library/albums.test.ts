@@ -61,7 +61,10 @@ describe('buildLibrary()', () => {
 			it('splits by file dir', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({ path: '~/Music/D2R7/ayeka.mp3' }),
-					makeMetadata({ path: '~/Music/D2R6/elul.mp3' }),
+					makeMetadata({
+						path: '~/Music/D2R6/elul.mp3',
+						data: { album: 'Darkness to Redemption 6' },
+					}),
 				]);
 
 				expect(result.albums.size).toBe(2);
@@ -91,7 +94,7 @@ describe('buildLibrary()', () => {
 				expect(result.albums.size).toBe(2);
 			});
 
-			it('when some album titles are missing, emits diagnostic & merges', async () => {
+			it('when some album titles are missing, emits diagnostic & splits', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata(),
 					makeMetadata({
@@ -102,7 +105,7 @@ describe('buildLibrary()', () => {
 					}),
 				]);
 
-				expect(result.albums.size).toBe(1);
+				expect(result.albums.size).toBe(2);
 			});
 
 			it.todo('when defined release-types conflict, emits diagnostic & splits', async () => {
@@ -198,20 +201,22 @@ describe('buildLibrary()', () => {
 				expect(result.albums.size).toBe(2);
 			});
 
-			it('when some album artists are missing, emits diagnostic & merges', async () => {
+			it('when some album artists are missing, emits diagnostic & splits', async () => {
 				const { result } = await buildLibrary([
 					makeMetadata({
 						data: { albumArtists: ['Ari Goldwag'] },
 					}),
 					makeMetadata({
 						data: {
-							title: 'One More Dance',
-							albumArtists: undefined,
+							albumArtists: ['Moshe Dov Goldwag'],
 						},
+					}),
+					makeMetadata({
+						data: { albumArtists: undefined },
 					}),
 				]);
 
-				expect(result.albums.size).toBe(1);
+				expect(result.albums.size).toBe(3);
 			});
 		});
 

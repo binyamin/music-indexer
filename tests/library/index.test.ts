@@ -3,6 +3,7 @@ import type { Metadata } from '#lib/models/metadata.ts';
 import type { Diagnostic } from '#shared/diagnostic.ts';
 import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
+import { makeMetadata } from './test-utils';
 
 describe('buildLibrary()', () => {
 	describe('empty input', () => {
@@ -17,27 +18,19 @@ describe('buildLibrary()', () => {
 	});
 
 	describe('has input', () => {
+		const data = makeMetadata();
+
 		const diag = {
 			code: 'unsupported',
 			level: 'warning',
 			message: 'Unsupported format',
 			location: {
 				type: 'file',
-				path: '/foo/bar.mp3',
+				path: data.path,
 			},
 		} satisfies Diagnostic;
 
-		const data: Metadata = {
-			path: diag.location.path,
-			data: {
-				title: 'Yesterday',
-				album: 'Help!',
-				artists: ['The Beatles'],
-				releaseDate: '1965',
-				duration: 123,
-			},
-			diagnostics: [diag],
-		};
+		data.diagnostics.push(diag);
 
 		it('forwards any diagnostics', async () => {
 			const { diagnostics } = await buildLibrary([data]);
@@ -54,13 +47,11 @@ describe('buildLibrary()', () => {
 				},
 			});
 
-			expect(events).toEqual([
-				{
-					kind: 'file',
-					path: diag.location.path,
-					diagnostics: [diag],
-				},
-			]);
+			expect(events).toContainEqual({
+				kind: 'file',
+				path: diag.location.path,
+				diagnostics: [diag],
+			});
 		});
 
 		it('aborts on ctrl+c', async () => {

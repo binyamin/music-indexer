@@ -13,12 +13,15 @@
  * @module
  */
 
+import { candidateAlbumKey, trackId } from '#lib/ids/index.ts';
 import type { Ref } from '#lib/models/entities.ts';
 import type { Library } from '#lib/models/library.ts';
 import type { Metadata } from '#lib/models/metadata.ts';
 import type { Diagnostic } from '#shared/diagnostic.ts';
+import { createAlbum, createRawAlbum } from './album.ts';
 import { createArtist } from './artist.ts';
-import { createRawTrack, type RawTrack } from './track.ts';
+import { getAlbumFolder, type Group, type GroupedTrack } from './group.ts';
+import { createRawTrack, createTrack } from './track.ts';
 import type { Result } from './utils.ts';
 
 export type BuildEvent<
@@ -63,7 +66,7 @@ export async function buildLibrary(
 
 	options?.signal?.throwIfAborted();
 
-	const draftTracks: RawTrack[] = [];
+	const draftTracks: GroupedTrack[] = [];
 
 	for await (const item of items) {
 		diagnostics.push(...item.diagnostics);
@@ -101,9 +104,98 @@ export async function buildLibrary(
 
 		const draftTrack = createRawTrack(item, track_artists);
 
-		draftTracks.push(draftTrack);
+		draftTracks.push({
+			path: item.path,
+			data: item.data,
+			track: draftTrack,
+		});
 
 		options?.signal?.throwIfAborted();
+	}
+
+	// Group tracks into candidate albums
+	const groups = new Map<string, Group>();
+
+	for (const t of draftTracks) {
+		const album_artists: Ref<'artist'>[] = [];
+
+		for (const name of t.data.albumArtists ?? []) {
+			const artistResult = createArtist(name);
+
+			if (!lib.artists.has(artistResult.result.id)) {
+				lib.artists.set(artistResult.result.id, artistResult.result);
+				diagnostics.push(...artistResult.diagnostics);
+
+				options?.onEvent?.({
+					kind: 'artist',
+					id: artistResult.result.id,
+					diagnostics: artistResult.diagnostics,
+				});
+			}
+
+			album_artists.push({
+				entity: 'artist',
+				id: artistResult.result.id,
+			});
+
+			options?.signal?.throwIfAborted();
+		}
+
+		const dir = getAlbumFolder(t.path);
+
+		const key = candidateAlbumKey({
+			dir,
+			title: t.data.album,
+			artists: album_artists,
+		});
+
+		const group = groups.getOrInsert(key, {
+			dir,
+			title: t.data.album ?? null,
+			artists: album_artists.length ? album_artists : null,
+			tracks: [],
+		});
+
+		group.tracks.push(t);
+
+		options?.signal?.throwIfAborted();
+	}
+
+	for (const [, g] of groups) {
+		const draftAlbum = createRawAlbum(g);
+		options?.signal?.throwIfAborted();
+
+		const album = createAlbum(draftAlbum);
+
+		lib.albums.set(album.id, album);
+
+		options?.onEvent?.({
+			kind: 'album',
+			id: album.id,
+			diagnostics: [], // TODO
+		});
+
+		options?.signal?.throwIfAborted();
+
+		for (const t of g.tracks) {
+			const track = createTrack(t, album);
+
+			album.tracks.push({
+				entity: 'track',
+				id: track.id,
+			});
+
+			lib.tracks.set(track.id, track);
+
+			options?.onEvent?.({
+				kind: 'track',
+				id: track.id,
+				albumId: album.id,
+				diagnostics: [], // TODO
+			});
+
+			options?.signal?.throwIfAborted();
+		}
 	}
 
 	return {

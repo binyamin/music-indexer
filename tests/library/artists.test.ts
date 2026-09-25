@@ -1,35 +1,27 @@
 import { buildLibrary } from '#lib/library/index.ts';
-import type { Metadata } from '#lib/models/metadata.ts';
 import { expect } from '@std/expect';
 import { describe, it } from 'node:test';
+import { makeMetadata } from './test-utils';
 
 describe('buildLibrary()', () => {
-	const data: Metadata = {
-		path: '~/Music/Charlie Puth/Voicenotes/change.mp3',
-		data: {
-			title: 'Change',
-			albumArtists: ['Charlie Puth'],
-			album: 'Voicenotes',
-			artists: ['James Taylor'], // Note: Charlie Puth is actually an artist here as well, but we need to test w/o it.
-			releaseDate: '2018-05-11',
-			duration: 217,
-		},
-		diagnostics: [],
-	};
+	const data = makeMetadata({
+		data: { artists: ['Moshe Dov Goldwag'], albumArtists: ['Ari Goldwag'] },
+	});
 
 	describe('artists', () => {
 		it('creates an artist per track artist', async () => {
 			const { result } = await buildLibrary([data]);
-			expect(
-				[...result.artists.values()].map(v => v.name),
-			).toEqual(data.data.artists!);
+
+			const actual = result.artists.values().toArray().map(v => v.name);
+			expect(actual).toContainEqual(data.data.artists[0]);
 		});
 
 		it('creates an artist per album artist', async () => {
 			const { result } = await buildLibrary([data]);
-			expect(
-				[...result.artists.values()].map(v => v.name),
-			).toEqual(data.data.albumArtists!);
+
+			const actual = result.artists.values().toArray().map(v => v.name);
+
+			expect(actual).toContainEqual(data.data.albumArtists[0]);
 		});
 
 		it('dedupes artists', async () => {
