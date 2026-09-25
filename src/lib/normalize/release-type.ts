@@ -1,6 +1,6 @@
 import type { Diagnostic } from '#shared/diagnostic.ts';
-import { has } from '#shared/utils.ts';
 import type { ReleaseType } from '../models/metadata.ts';
+import { has } from './utils.ts';
 
 export function normalizeReleaseType(value: string[]): {
 	value?: ReleaseType;
