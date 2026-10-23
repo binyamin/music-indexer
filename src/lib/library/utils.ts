@@ -17,3 +17,32 @@ export interface Result<T> {
 	result: T;
 	diagnostics: Diagnostic[];
 }
+
+/**
+ * Support for ES2026+ `Map.prototype.getOrInsertComputed`
+ */
+export function getOrInsertComputed<K, V>(
+	map: Map<K, V>,
+	key: K,
+	fn: (key: K) => V,
+) {
+	return map.get(key) || (() => {
+		const e = fn(key);
+		map.set(key, e);
+		return e;
+	})();
+}
+
+/**
+ * Support for ES2026+ `Map.prototype.getOrInsert`
+ */
+export function getOrInsert<K, V>(
+	map: Map<K, V>,
+	key: K,
+	value: V,
+) {
+	return map.get(key) || (() => {
+		map.set(key, value);
+		return value;
+	})();
+}

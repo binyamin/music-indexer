@@ -1,9 +1,9 @@
 {
 	"name": "npm-template",
-	"private": true,
-	"type": "module",
 	"version": "0.1.0-dev.0",
+	"private": true,
 	"license": "MIT",
+	"type": "module",
 	"imports": {
 		"#lib/*": "./src/lib/*",
 		"#shared/*": "./src/shared/*"
@@ -12,5 +12,8 @@
 		"@std/expect": "jsr:^1.0.20",
 		"@types/node": "^26.6.5",
 		"taglib-wasm": "^2.4.0"
+	},
+	"engines": {
+		"node": ">= 24"
 	}
 }

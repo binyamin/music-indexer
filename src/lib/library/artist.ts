@@ -7,7 +7,7 @@
 import { artistId } from '#lib/ids/index.ts';
 import { normalizeArtistName } from '#lib/ids/normalize.ts';
 import type { Artist } from '#lib/models/entities.ts';
-import type { Result } from './utils.ts';
+import { getOrInsertComputed, type Result } from './utils.ts';
 
 // The `artistId` method is expensive due to hashing, so we cache the normalized
 // artist key instead of the id
@@ -20,7 +20,7 @@ export function createArtist(name: string): Result<Artist> {
 	// same normalization ids uses internally
 	const key = normalizeArtistName(name);
 
-	const entity = artistCache.getOrInsertComputed(key, () => {
+	const entity = getOrInsertComputed(artistCache, key, () => {
 		const id = artistId({ name });
 
 		return {

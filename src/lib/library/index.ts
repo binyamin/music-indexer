@@ -22,7 +22,7 @@ import { createAlbum, createRawAlbum } from './album.ts';
 import { createArtist } from './artist.ts';
 import { getAlbumFolder, type Group, type GroupedTrack } from './group.ts';
 import { createRawTrack, createTrack } from './track.ts';
-import type { Result } from './utils.ts';
+import { getOrInsert, type Result } from './utils.ts';
 
 export type BuildEvent<
 	T extends 'file' | 'artist' | 'album' | 'track' =
@@ -149,7 +149,7 @@ export async function buildLibrary(
 			artists: album_artists,
 		});
 
-		const group = groups.getOrInsert(key, {
+		const group = getOrInsert(groups, key, {
 			dir,
 			title: t.data.album ?? null,
 			artists: album_artists.length ? album_artists : null,
