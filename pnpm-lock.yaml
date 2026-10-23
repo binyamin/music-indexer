@@ -12,11 +12,11 @@ importers:
         specifier: jsr:^1.0.20
         version: '@jsr/std__expect@1.0.20'
       '@types/node':
-        specifier: ^24.13.3
-        version: 24.13.3
+        specifier: ^26.6.5
+        version: 26.6.5
       taglib-wasm:
-        specifier: ^1.6.1
-        version: 1.6.1
+        specifier: ^2.4.0
+        version: 2.4.0
 
 packages:
 
@@ -36,11 +36,11 @@ packages:
     resolution: {integrity: sha512-47XIizs9XZXvuJgoaJUIE2lFoID8ugvc0jzSHP+Ptfk8nTbnR8g788wv48N03Kx0UkAv559HWRQ3yzOgzlRNUA==}
     engines: {node: '>= 18'}
 
-  '@types/node@24.13.3':
-    resolution: {integrity: sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==}
+  '@types/node@26.6.5':
+    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
 
-  taglib-wasm@1.6.1:
-    resolution: {integrity: sha512-KSb+AxT1ynzM6ECR373mzO6Heji6EW8O/LOBgCqtvSVSy9ghI/mDmBd9KjQ3QtITqXm/1lkJvOvpZCzLYW6Yag==}
+  taglib-wasm@2.4.0:
+    resolution: {integrity: sha512-3T1P03fXLt9d7RHV7YTnTtoB6ac2XpbsNx+qRmgCewyRt9V9jRpKNm89ORv3uNH1yEm/ZkyUUemBxn9H6EnPrQ==}
     engines: {node: '>=24.0.0'}
     peerDependencies:
       typescript: '>=4.5.0'
@@ -48,8 +48,8 @@ packages:
       typescript:
         optional: true
 
-  undici-types@7.18.2:
-    resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
+  undici-types@8.9.0:
+    resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
 snapshots:
 
@@ -71,12 +71,12 @@ snapshots:
 
   '@msgpack/msgpack@3.1.3': {}
 
-  '@types/node@24.13.3':
+  '@types/node@26.6.5':
     dependencies:
-      undici-types: 7.18.2
+      undici-types: 8.9.0
 
-  taglib-wasm@1.6.1:
+  taglib-wasm@2.4.0:
     dependencies:
       '@msgpack/msgpack': 3.1.3
 
-  undici-types@7.18.2: {}
+  undici-types@8.9.0: {}
